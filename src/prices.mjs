@@ -22,7 +22,6 @@ function createApp(database) {
     const date = parseDate(req.query.date);
     const date2 = parseDate2(req.query.date);
     console.log(date);
-    console.log(date2);
     const cost = calculateCost(age, type, date, baseCost);
     const cost2 = calculateCost2(age, type, date2, baseCost);
     res.json({ cost });
@@ -35,9 +34,9 @@ function createApp(database) {
   }
 
   function parseDate2(dateString) {
-    console.log(dateString)
     if (dateString) {
-      return Temporal.PlainDate.from(dateString);
+      const date = Temporal.PlainDate.from(dateString);
+      return date;
     }
   }
 
@@ -114,7 +113,7 @@ function createApp(database) {
 
   function calculateReduction2(date) {
     let reduction = 0;
-    if (date && isMonday2(date) && !isHoliday2(date)) {
+    if (date && isMonday2(date) /*&& !isHoliday2(date)*/) {
       reduction = 35;
     }
     return reduction;
@@ -141,8 +140,8 @@ function createApp(database) {
   }
 
   function isMonday2(date) {
-    return true;
-    return date.getDay() === 1;
+    console.log(date.dayOfWeek);
+    return date.dayOfWee === 1;
   }
 
   function isHoliday2(date) {
