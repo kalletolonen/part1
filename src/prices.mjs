@@ -88,7 +88,7 @@ function createApp(database) {
   }
 
   function calculateCostForDayTicket2(age, date, baseCost) {
-    let reduction = 0
+    let reduction = calculateReduction2(date);
     if (age === undefined) {
       return Math.ceil(baseCost * (1 - reduction / 100));
     }
@@ -112,11 +112,41 @@ function createApp(database) {
     return reduction;
   }
 
+  function calculateReduction2(date) {
+    let reduction = 0;
+    if (date && isMonday2(date) && !isHoliday2(date)) {
+      reduction = 35;
+    }
+    return reduction;
+  }
+
   function isMonday(date) {
     return date.getDay() === 1;
   }
 
   function isHoliday(date) {
+    const holidays = database.getHolidays();
+    for (let row of holidays) {
+      let holiday = new Date(row.holiday);
+      if (
+        date &&
+        date.getFullYear() === holiday.getFullYear() &&
+        date.getMonth() === holiday.getMonth() &&
+        date.getDate() === holiday.getDate()
+      ) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function isMonday2(date) {
+    return true;
+    return date.getDay() === 1;
+  }
+
+  function isHoliday2(date) {
+    return false;
     const holidays = database.getHolidays();
     for (let row of holidays) {
       let holiday = new Date(row.holiday);
